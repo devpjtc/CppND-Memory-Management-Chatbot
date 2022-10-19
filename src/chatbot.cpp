@@ -49,10 +49,11 @@ ChatBot::ChatBot(const ChatBot &chatBot)
 {
     std::cout << "ChatBot copy constuctor";
 
-    _image = chatBot._image;
     _chatLogic = chatBot._chatLogic;
     _rootNode = chatBot._rootNode;
     _currentNode = chatBot._currentNode;
+    _image = new wxBitmap(*chatBot._image);
+    _chatLogic->SetChatbotHandle(this);
 
 }
 
@@ -63,27 +64,29 @@ ChatBot &ChatBot::operator=(const ChatBot &chatBot)
     if (this == &chatBot)
         return *this;
 
-    delete _image;
-    delete _chatLogic;
-    delete _rootNode;
-    delete _currentNode;
+    if (_image != NULL)
+    {
+        delete _image;
+    }
 
     _image = chatBot._image;
     _chatLogic = chatBot._chatLogic;
     _rootNode = chatBot._rootNode;
     _currentNode = chatBot._currentNode;
+    _chatLogic->SetChatbotHandle(this);
 
     return *this;
 }
 
 ChatBot::ChatBot(ChatBot &&chatBot)
 {
-    std::cout << "ChatBot move constuctor";
+    std::cout << "ChatBot move constuctor" << std::endl;
 
-    _image = chatBot._image;
+    _image = new wxBitmap(*chatBot._image);
     _chatLogic = chatBot._chatLogic;
     _rootNode = chatBot._rootNode;
     _currentNode = chatBot._currentNode;
+    _chatLogic->SetChatbotHandle(this);
 
     chatBot._image = NULL;
     chatBot._chatLogic = nullptr;
@@ -94,20 +97,22 @@ ChatBot::ChatBot(ChatBot &&chatBot)
 
 ChatBot &ChatBot::operator=(ChatBot &&chatBot)
 {
-    std::cout << "ChatBot move assigment";
+    std::cout << "ChatBot move assigment" << std::endl;
 
     if (this == &chatBot)
         return *this;
 
-    delete _image;
-    delete _chatLogic;
-    delete _rootNode;
-    delete _currentNode;
+    if (_image != NULL)
+    {
+        delete _image;
+    }
+
 
     _image = chatBot._image;
     _chatLogic = chatBot._chatLogic;
     _rootNode = chatBot._rootNode;
     _currentNode = chatBot._currentNode;
+    _chatLogic->SetChatbotHandle(this);
 
     chatBot._image = NULL;
     chatBot._chatLogic = nullptr;
